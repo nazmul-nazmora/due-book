@@ -9,7 +9,7 @@ def add_customer():
             print("Customer name cannot be empty.")
             return     
         due = int(input("Enter due amount :- "))
-        if due <= 0 or due == 0:
+        if due <= 0:
             print("Due amount cannot be negative or zero.")
     except ValueError:
         print("Invalid input! Please enter a valid number.")
@@ -28,11 +28,11 @@ def view_customers():
             
         else:
             for customer in customers:
-                print(f"Name: {customer['Name']} and Due: {customer['Due']}")
+                print(f"Name: {customer['Name']} | Due: {customer['Due']} TK")
     else:
         for customer in customers:
             if customer ["Name"].lower() == name:
-                print(f"Name: {customer['Name']} and Due: {customer['Due']}")
+                print(f"Name: {customer['Name']} | Due: {customer['Due']} TK")
                 break
         else:
             print("Customer not found.")
@@ -43,11 +43,12 @@ def payment_system():
 
     for customer in customers:
         if customer["Name"].lower() == name:
-            print(f"Name {customer['Name']} and Due {customer['Due']}")
+            print(f"Name: {customer['Name']} | Due: {customer['Due']} TK")
             found = True
-            ask = input("Do you want to payment right now? (yes or no) :- ")
+            
+            ask = input("Do you want to pay right now? (yes or no) :- ").strip().lower()
 
-            if ask.lower() == "Yes":
+            if ask == "yes":
                 try:
                     payment = int(input("Enter your payment :- "))
                 except ValueError:
@@ -71,10 +72,28 @@ def payment_system():
             else:
                 print("Please pay on time.")
             break
+
     if not found:
         print("This name doesn't exist.")
 
-menu = ["1. Add", "2. View", "3. Payment", "4. Exit"]
+def calculate_total_due():
+    if not customers:
+        print("No customer found.")
+        return
+    
+    else:
+        name = input("Enter your name :- ").strip().lower()
+        if name == "nazmul":
+            total_sum = 0 
+            for customer in customers:
+                due_amount = customer['Due']
+                total_sum = total_sum + due_amount
+            print(f"Total customers due {total_sum}")
+
+        else:
+            print("You are not the owner. Only the can view the total.")
+
+menu = ["1. Add", "2. View", "3. Payment", "4. Total Due", "5. Exit"]
 
 while True:
     print("========= Menu =========")
@@ -98,6 +117,9 @@ while True:
         payment_system()
 
     elif option == 4:
+        calculate_total_due()
+
+    elif option == 5:
         print("Thank you for using the Customer Due Book System!")
         break
 
@@ -106,7 +128,7 @@ while True:
         print("Invalid input! Please enter a valid number.")
 
 result = "\n".join(
-    f"{customer['Name']} - {customer['Due']}"
+    f"Name: {customer['Name']} - Due: {customer['Due']} TK"
     for customer in customers
 )
 
